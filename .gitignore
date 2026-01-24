@@ -1,0 +1,6 @@
+.env
+node_modules/
+oldCommands/
+TODO.md
+jsonFiles/dungeonUserStats/*/season*
+nodemon.json
