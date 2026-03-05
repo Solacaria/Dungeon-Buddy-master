@@ -85,7 +85,8 @@ module.exports = {
             // Parse key levels from the channel name
             const currentChannel = interaction.channel;
             const channelName = currentChannel.name;
-            const channelNameFix = channelName.replace("lfg-", "").toLowerCase();
+            const channelNameFixPrefix = channelName.replace("lfg-", "").toLowerCase();
+            const channelNameFix = channelNameFixPrefix.replace("-and-up", "").toLowerCase();
             const channelNameSplit = channelNameFix.split("-");
             const isSingularKeyLevel = channelNameSplit.length === 2;
 
@@ -94,11 +95,14 @@ module.exports = {
             console.log(lowerDifficultyRange);
 
             let upperDifficultyRange;
-            if (!isSingularKeyLevel) {
-                upperDifficultyRange = lowerDifficultyRange;
-            } else {
+
+            if (isSingularKeyLevel){
+                if (lowerDifficultyRange >= 10){
+                    upperDifficultyRange = 20;
+                }
                 upperDifficultyRange = parseInt(channelNameSplit[1].replace("m", ""));
             }
+            else upperDifficultyRange = lowerDifficultyRange;
 
             const difficultyPrefix = lowerDifficultyRange === 0 ? "M" : "+";
             const dungeonDifficulty = parseInt(timeCompletionMatch[1], 10);
@@ -199,6 +203,7 @@ module.exports = {
             // Update the filled spot counter in the main object
             mainObject.embedData.filledSpotCounter = filledSpotCounter;
 
+            //TODO DENNA SKICKAR FAST DEN INTE SKA! TA BORT!
             // // Reply to the interaction first then send the embed which catches any errors
             // await interaction.reply({
             //     content: `**Please ensure applying members are __from NoP__ and __use the passphrase__ in-game!**\nThe passphrase for the dungeon is: \`${mainObject.utils.passphrase.phrase}\``,

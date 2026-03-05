@@ -62,18 +62,25 @@ module.exports = {
         // Parse key levels from the channel name
         const currentChannel = interaction.channel;
         const channelName = currentChannel.name;
-        const channelNameFix = channelName.replace("lfg-", "").toLowerCase();
+        const channelNameFixPrefix = channelName.replace("lfg-", "").toLowerCase();
+        const channelNameFix = channelNameFixPrefix.replace("-and-up", "").toLowerCase();
+        
         const channelNameSplit = channelNameFix.split("-");
         const isSingularKeyLevel = channelNameSplit.length === 2;
 
         const lowerDifficultyRange = parseInt(channelNameSplit[0].replace("m", ""));
 
         let upperDifficultyRange;
-        if (!isSingularKeyLevel) {
-            upperDifficultyRange = lowerDifficultyRange;
-        } else {
+
+        if (isSingularKeyLevel){
+            if (lowerDifficultyRange >= 10){
+                upperDifficultyRange = 20;
+            }
             upperDifficultyRange = parseInt(channelNameSplit[1].replace("m", ""));
         }
+        else upperDifficultyRange = lowerDifficultyRange;
+
+
 
         const difficultyPrefix = lowerDifficultyRange === 0 ? "M" : "+";
 

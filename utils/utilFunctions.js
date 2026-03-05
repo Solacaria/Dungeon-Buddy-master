@@ -90,16 +90,13 @@ function parseRolesToTag(difficulty, requiredComposition, guildId) {
 
     let roleDifficultyString = "";
 
-    if (difficulty == "M0") {
-        roleDifficultyString = "-M0";
-    } else if (difficulty < 4) {
-        roleDifficultyString = "-M2-3";
-    } else if (difficulty < 7) {
-        roleDifficultyString = "-M4-6";
-    } else if (difficulty < 10) {
-        roleDifficultyString = "-M7-9";
+    // Parse the difficulty value (e.g., "M5" becomes 5, "+5" becomes 5)
+    const difficultyValue = parseInt(difficulty.replace(/[M+]/g, ""));
+
+    if (difficultyValue >= 10) {
+        roleDifficultyString = "-M10+";
     } else {
-        roleDifficultyString = "-M10-11";
+        roleDifficultyString = "-M0-9";
     }
 
     const globalRoles = global.roleMap.get(guildId);
